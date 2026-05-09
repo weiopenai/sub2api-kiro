@@ -18,9 +18,10 @@ ARG GOSUMDB=sum.golang.google.cn
 FROM ${NODE_IMAGE} AS frontend-builder
 
 WORKDIR /app/frontend
+ENV NODE_OPTIONS=--max-old-space-size=1536
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# Install pnpm (pinned for reproducible Docker builds)
+RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 # Install dependencies first (better caching)
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
@@ -73,9 +74,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build \
 FROM ${ALPINE_IMAGE}
 
 # Labels
-LABEL maintainer="Wei-Shaw <github.com/Wei-Shaw>"
-LABEL description="Sub2API - AI API Gateway Platform"
-LABEL org.opencontainers.image.source="https://github.com/Wei-Shaw/sub2api"
+LABEL maintainer="xiangking <github.com/xiangking>"
+LABEL description="Sub2API Kiro Edition - AI API Gateway Platform"
+LABEL org.opencontainers.image.source="https://github.com/xiangking/sub2api"
 
 # Install runtime dependencies
 RUN apk add --no-cache \
