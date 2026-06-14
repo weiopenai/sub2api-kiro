@@ -2,7 +2,7 @@
 
 AI API gateway for Claude Code style clients, Kiro accounts, and multi-platform account scheduling.
 
-[中文](README_CN.md)
+[简体中文](README_CN.md) | [繁體中文](README_TW.md)
 
 > This project is an independently maintained fork of [Wei-Shaw/sub2api](https://github.com/Wei-Shaw/sub2api). It keeps the original LGPL-3.0-or-later license and attribution, while adding a Kiro-focused product direction.
 
@@ -50,22 +50,25 @@ Available models depend on each upstream account and the model mappings configur
 The recommended image for this fork is:
 
 ```bash
-ghcr.io/xiangking/sub2api-kiro:latest
+docker pull ghcr.io/weiopenai/sub2api-kiro:latest
 ```
 
 Compose deployment:
 
 ```bash
-mkdir -p sub2api-kiro-deploy && cd sub2api-kiro-deploy
-curl -sSL https://raw.githubusercontent.com/xiangking/sub2api-kiro/main/deploy/docker-deploy.sh | bash
+git clone https://github.com/weiopenai/sub2api-kiro.git
+cd sub2api-kiro/deploy
+cp .env.example .env
 docker compose up -d
 docker compose logs -f sub2api
 ```
 
+> See [deploy/install-zh-TW.html](deploy/install-zh-TW.html) for a step-by-step Traditional Chinese deployment guide for a fresh server.
+
 Manual clone:
 
 ```bash
-git clone https://github.com/xiangking/sub2api-kiro.git
+git clone https://github.com/weiopenai/sub2api-kiro.git
 cd sub2api-kiro/deploy
 cp .env.example .env
 docker compose -f docker-compose.local.yml up -d
@@ -123,7 +126,7 @@ Avoid blind merges when they conflict with the Kiro-specific product direction.
 
 This project is derived from [Wei-Shaw/sub2api](https://github.com/Wei-Shaw/sub2api). Thanks to the original author and contributors for the foundation.
 
-The Go module path currently remains `github.com/Wei-Shaw/sub2api` to avoid a high-risk import-path churn. Public repository, Docker image, and documentation are maintained under `xiangking/sub2api-kiro`.
+The Go module path currently remains `github.com/Wei-Shaw/sub2api` to avoid a high-risk import-path churn. Public repository, Docker image, and documentation are maintained under `weiopenai/sub2api-kiro`.
 
 ## Disclaimer
 

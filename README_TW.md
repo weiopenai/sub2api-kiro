@@ -63,6 +63,8 @@ docker compose up -d
 docker compose logs -f sub2api
 ```
 
+> 全新伺服器的繁體中文部署指南請見 [deploy/install-zh-TW.html](deploy/install-zh-TW.html)。
+
 本機 Docker 如需 Kiro Social Auth 自動回呼，可以額外開放 `49153` 並設定：
 
 ```env
@@ -115,7 +117,7 @@ git cherry-pick <upstream-fix-commit>
 
 本專案衍生自 [Wei-Shaw/sub2api](https://github.com/Wei-Shaw/sub2api)。感謝原作者和社群貢獻者提供的基礎工程。
 
-目前 Go module path 仍保留為 `github.com/Wei-Shaw/sub2api`，目的是避免大規模 import path 改名帶來的風險。公開倉庫、Docker 映像檔和文件由 `xiangking/sub2api-kiro` 獨立維護。
+目前 Go module path 仍保留為 `github.com/Wei-Shaw/sub2api`，目的是避免大規模 import path 改名帶來的風險。公開倉庫、Docker 映像檔和文件由 `weiopenai/sub2api-kiro` 獨立維護。
 
 ## 免責聲明
 
