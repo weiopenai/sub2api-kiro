@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 
-type LocaleCode = 'en' | 'zh'
+type LocaleCode = 'en' | 'zh' | 'zh-TW'
 
 type LocaleMessages = Record<string, any>
 
@@ -9,21 +9,33 @@ const DEFAULT_LOCALE: LocaleCode = 'en'
 
 const localeLoaders: Record<LocaleCode, () => Promise<{ default: LocaleMessages }>> = {
   en: () => import('./locales/en'),
-  zh: () => import('./locales/zh')
+  zh: () => import('./locales/zh'),
+  'zh-TW': () => import('./locales/zh-TW')
 }
 
-function isLocaleCode(value: string): value is LocaleCode {
-  return value === 'en' || value === 'zh'
+export function isLocaleCode(value: string): value is LocaleCode {
+  return value === 'en' || value === 'zh' || value === 'zh-TW'
 }
 
-function getDefaultLocale(): LocaleCode {
+export function getDefaultLocale(): LocaleCode {
   const saved = localStorage.getItem(LOCALE_KEY)
   if (saved && isLocaleCode(saved)) {
     return saved
   }
 
   const browserLang = navigator.language.toLowerCase()
+
   if (browserLang.startsWith('zh')) {
+    // 繁體中文區域：台灣、香港、澳門、Hant 腳本子標籤
+    if (
+      browserLang === 'zh-tw' ||
+      browserLang === 'zh-hk' ||
+      browserLang === 'zh-mo' ||
+      browserLang.startsWith('zh-hant')
+    ) {
+      return 'zh-TW'
+    }
+    // 其餘中文（zh、zh-CN、zh-Hans 等）歸為簡體
     return 'zh'
   }
 
@@ -85,7 +97,8 @@ export function getLocale(): LocaleCode {
 
 export const availableLocales = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'zh', name: '中文', flag: '🇨🇳' }
+  { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'zh-TW', name: '繁體中文', flag: '🇹🇼' }
 ] as const
 
 export default i18n

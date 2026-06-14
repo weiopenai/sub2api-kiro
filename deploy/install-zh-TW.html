@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sub2API Kiro - 新伺服器安裝指南（繁體中文）</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #1a1d24;
+    --text: #e4e7ec;
+    --muted: #9aa3af;
+    --accent: #6d8eff;
+    --border: #2a2e37;
+    --code-bg: #11141a;
+    --warn-bg: #2a2113;
+    --warn-border: #6b5417;
+    --warn-text: #f0c14b;
+    --ok-bg: #14241a;
+    --ok-border: #1f6b3a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  h2 { font-size: 21px; margin: 40px 0 14px; padding-top: 8px; }
+  h3 { font-size: 16px; margin: 24px 0 10px; color: var(--accent); }
+  .sub { color: var(--muted); font-size: 15px; }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 18px 0;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: #0f1115;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 15px;
+    margin-right: 10px;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  }
+  code { font-family: "JetBrains Mono", "Fira Code", Consolas, monospace; }
+  p code, li code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #ffc98a;
+  }
+  .note {
+    background: var(--warn-bg);
+    border-left: 4px solid var(--warn-border);
+    color: var(--warn-text);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .ok {
+    background: var(--ok-bg);
+    border-left: 4px solid var(--ok-border);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; }
+  th { background: var(--card); }
+  a { color: var(--accent); }
+  ul { padding-left: 22px; }
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 24px; }
+  .toc ol { margin: 0; padding-left: 20px; }
+  .toc a { text-decoration: none; }
+  footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Sub2API Kiro · 新伺服器安裝指南</h1>
+    <p class="sub">使用 Docker 與 GitHub Container Registry 映像檔在全新伺服器上部署</p>
+  </header>
+
+  <div class="toc">
+    <strong>目錄</strong>
+    <ol>
+      <li><a href="#prereq">環境需求</a></li>
+      <li><a href="#install-docker">安裝 Docker</a></li>
+      <li><a href="#prepare">準備部署檔案</a></li>
+      <li><a href="#env">設定環境變數</a></li>
+      <li><a href="#run">啟動服務</a></li>
+      <li><a href="#login">取得管理員密碼並登入</a></li>
+      <li><a href="#update">更新與維護</a></li>
+      <li><a href="#troubleshoot">常見問題</a></li>
+    </ol>
+  </div>
+
+  <h2 id="prereq">1. 環境需求</h2>
+  <div class="step">
+    <ul>
+      <li>Linux 伺服器（Ubuntu / Debian / CentOS 等）</li>
+      <li>已安裝 <strong>Docker</strong> 與 <strong>Docker Compose v2</strong></li>
+      <li>至少 2GB RAM（建議 4GB 以上）</li>
+      <li>對外開放的連接埠（本指南使用 <code>8880</code>）</li>
+    </ul>
+    <p class="sub">映像檔已公開發布於：<code>ghcr.io/weiopenai/sub2api-kiro:latest</code></p>
+  </div>
+
+  <h2 id="install-docker">2. 安裝 Docker（若尚未安裝）</h2>
+  <div class="step">
+    <pre><code># 使用官方一鍵安裝腳本
+curl -fsSL https://get.docker.com | sh
+
+# 啟動並設為開機自動啟動
+sudo systemctl enable --now docker
+
+# 將目前使用者加入 docker 群組（免 sudo，需重新登入生效）
+sudo usermod -aG docker $USER</code></pre>
+    <p>確認版本：</p>
+    <pre><code>docker --version
+docker compose version</code></pre>
+  </div>
+
+  <h2 id="prepare">3. 準備部署檔案</h2>
+  <div class="step">
+    <p>建立部署目錄，並下載 <code>docker-compose.yml</code> 與 <code>.env</code> 範例：</p>
+    <pre><code>mkdir -p ~/sub2api-kiro && cd ~/sub2api-kiro
+
+# 從專案倉庫取得部署檔（或自行用 scp 傳上來）
+curl -O https://raw.githubusercontent.com/weiopenai/sub2api-kiro/main/deploy/docker-compose.yml
+curl -o .env https://raw.githubusercontent.com/weiopenai/sub2api-kiro/main/deploy/.env.example</code></pre>
+    <div class="note">
+      若倉庫為私有或無法直接下載，請從你本機的 <code>deploy/</code> 目錄把 <code>docker-compose.yml</code> 與 <code>.env</code> 用 <code>scp</code> 傳到伺服器。映像檔本身已公開，<code>docker compose up</code> 會自動拉取。
+    </div>
+  </div>
+
+  <h2 id="env">4. 設定環境變數</h2>
+  <div class="step">
+    <p>編輯 <code>.env</code>，務必修改以下幾項：</p>
+    <pre><code>nano .env</code></pre>
+    <table>
+      <tr><th>變數</th><th>說明</th><th>建議值</th></tr>
+      <tr><td><code>SERVER_PORT</code></td><td>對外連接埠（避免用常見的 8080）</td><td><code>8880</code></td></tr>
+      <tr><td><code>POSTGRES_PASSWORD</code></td><td>資料庫密碼（必改）</td><td><code>openssl rand -hex 16</code> 產生</td></tr>
+      <tr><td><code>JWT_SECRET</code></td><td>登入 token 簽章金鑰（固定值避免重啟後登出）</td><td><code>openssl rand -hex 32</code> 產生</td></tr>
+      <tr><td><code>TOTP_ENCRYPTION_KEY</code></td><td>2FA 加密金鑰（固定值避免 2FA 失效）</td><td><code>openssl rand -hex 32</code> 產生</td></tr>
+      <tr><td><code>ADMIN_EMAIL</code></td><td>管理員帳號</td><td>你的 Email</td></tr>
+      <tr><td><code>ADMIN_PASSWORD</code></td><td>管理員密碼（留空則自動生成並印在 log）</td><td>留空或自訂</td></tr>
+      <tr><td><code>TZ</code></td><td>時區</td><td><code>Asia/Taipei</code></td></tr>
+    </table>
+    <p>快速產生隨機金鑰：</p>
+    <pre><code>echo "JWT_SECRET=$(openssl rand -hex 32)"
+echo "TOTP_ENCRYPTION_KEY=$(openssl rand -hex 32)"
+echo "POSTGRES_PASSWORD=$(openssl rand -hex 16)"</code></pre>
+    <div class="note">
+      <strong>重要：</strong><code>JWT_SECRET</code> 與 <code>TOTP_ENCRYPTION_KEY</code> 一定要設成固定值。如果留空，每次容器重啟都會重新生成，導致所有使用者被登出、2FA 失效。
+    </div>
+  </div>
+
+  <h2 id="run">5. 啟動服務</h2>
+  <div class="step">
+    <pre><code># 確認 docker-compose.yml 的 image 為：
+#   image: ghcr.io/weiopenai/sub2api-kiro:latest
+
+# 拉取映像檔並在背景啟動
+docker compose up -d
+
+# 查看啟動日誌
+docker compose logs -f sub2api</code></pre>
+    <p>確認三個容器都是 <code>healthy</code>：</p>
+    <pre><code>docker ps --filter "name=sub2api"</code></pre>
+    <div class="ok">
+      看到 <code>sub2api</code>、<code>sub2api-postgres</code>、<code>sub2api-redis</code> 都顯示 <strong>(healthy)</strong> 就代表啟動成功。
+    </div>
+  </div>
+
+  <h2 id="login">6. 取得管理員密碼並登入</h2>
+  <div class="step">
+    <p>如果 <code>.env</code> 的 <code>ADMIN_PASSWORD</code> 留空，系統會在首次啟動時自動生成密碼，從 log 取得：</p>
+    <pre><code>docker logs sub2api 2>&amp;1 | grep -i "Generated admin password"</code></pre>
+    <p>接著用瀏覽器開啟（把 <code>SERVER_IP</code> 換成伺服器 IP）：</p>
+    <pre><code>http://SERVER_IP:8880</code></pre>
+    <p>使用 <code>.env</code> 設定的 <code>ADMIN_EMAIL</code> 與上面取得的密碼登入。</p>
+    <div class="note">
+      登入後第一件事：到右上角語言切換器選擇 <strong>🇹🇼 繁體中文</strong>，並盡快修改管理員密碼。
+    </div>
+  </div>
+
+  <h2 id="update">7. 更新與維護</h2>
+  <div class="step">
+    <h3>更新到最新映像檔</h3>
+    <pre><code>cd ~/sub2api-kiro
+docker compose pull sub2api
+docker compose up -d --no-deps sub2api</code></pre>
+    <h3>重啟服務（不更新）</h3>
+    <pre><code>docker compose restart sub2api</code></pre>
+    <h3>查看日誌</h3>
+    <pre><code>docker compose logs -f sub2api</code></pre>
+    <div class="note">
+      <strong>切勿使用</strong> <code>docker compose down -v</code> —— 參數 <code>-v</code> 會刪除資料庫 volume，導致所有資料遺失。單純停止服務請用 <code>docker compose down</code>（不加 <code>-v</code>）。
+    </div>
+  </div>
+
+  <h2 id="troubleshoot">8. 常見問題</h2>
+  <div class="step">
+    <h3>連接埠被佔用</h3>
+    <p>修改 <code>.env</code> 的 <code>SERVER_PORT</code> 後，重建容器：</p>
+    <pre><code>docker compose down
+docker compose up -d</code></pre>
+
+    <h3>無法拉取映像檔</h3>
+    <p>確認映像檔名稱正確且為公開：<code>ghcr.io/weiopenai/sub2api-kiro:latest</code>。若改為私有，需先登入：</p>
+    <pre><code>echo $GITHUB_TOKEN | docker login ghcr.io -u weiopenai --password-stdin</code></pre>
+
+    <h3>資料庫資料保留</h3>
+    <p>資料存放於 Docker named volume（<code>postgres_data</code>），只要不執行 <code>down -v</code>，更新或重啟都不會遺失資料。</p>
+
+    <h3>備份資料庫</h3>
+    <pre><code>docker exec sub2api-postgres pg_dump -U sub2api sub2api > backup_$(date +%F).sql</code></pre>
+  </div>
+
+  <footer>
+    Sub2API Kiro · 繁體中文安裝指南 · 映像檔：ghcr.io/weiopenai/sub2api-kiro:latest
+  </footer>
+</div>
+</body>
+</html>
