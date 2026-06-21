@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sub2API Kiro - 使用手冊</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #1a1d24;
+    --text: #e4e7ec;
+    --muted: #9aa3af;
+    --accent: #6d8eff;
+    --accent2: #a78bfa;
+    --border: #2a2e37;
+    --code-bg: #11141a;
+    --warn-bg: #2a2113;
+    --warn-border: #6b5417;
+    --warn-text: #f0c14b;
+    --ok-bg: #14241a;
+    --ok-border: #1f6b3a;
+    --danger-bg: #241414;
+    --danger-border: #6b1717;
+    --danger-text: #f06b6b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 32px; }
+  h1 { font-size: 28px; margin: 0 0 8px; }
+  h2 { font-size: 21px; margin: 48px 0 14px; padding-top: 8px; border-top: 1px solid var(--border); }
+  h3 { font-size: 16px; margin: 24px 0 10px; color: var(--accent); }
+  .sub { color: var(--muted); font-size: 15px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 18px 0;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  }
+  code { font-family: "JetBrains Mono", "Fira Code", Consolas, monospace; }
+  p code, li code, td code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #ffc98a;
+  }
+  .note {
+    background: var(--warn-bg);
+    border-left: 4px solid var(--warn-border);
+    color: var(--warn-text);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .danger {
+    background: var(--danger-bg);
+    border-left: 4px solid var(--danger-border);
+    color: var(--danger-text);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .ok {
+    background: var(--ok-bg);
+    border-left: 4px solid var(--ok-border);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 9px 12px; text-align: left; }
+  th { background: var(--card); }
+  a { color: var(--accent); }
+  ul, ol { padding-left: 22px; }
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 24px; }
+  .toc ol { margin: 0; padding-left: 20px; }
+  .toc a { text-decoration: none; }
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .info-item {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .info-item .label { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+  .info-item .value { font-size: 15px; font-weight: 600; }
+  footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+  @media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Sub2API Kiro · 使用手冊</h1>
+    <p class="sub">個人維運筆記 — 日常維護、部署更新、常用指令速查</p>
+  </header>
+
+  <!-- 快速資訊 -->
+  <div class="info-grid">
+    <div class="info-item">
+      <div class="label">🌐 Web 管理介面</div>
+      <div class="value">http://localhost:8880</div>
+    </div>
+    <div class="info-item">
+      <div class="label">🐳 映像檔</div>
+      <div class="value">ghcr.io/weiopenai/sub2api-kiro:latest</div>
+    </div>
+    <div class="info-item">
+      <div class="label">📁 部署目錄</div>
+      <div class="value">~/services/sub2api-kiro/deploy</div>
+    </div>
+    <div class="info-item">
+      <div class="label">🔑 管理員帳號</div>
+      <div class="value">admin@sub2api.local</div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <strong>目錄</strong>
+    <ol>
+      <li><a href="#quick-ref">日常指令速查</a></li>
+      <li><a href="#update">更新部署</a></li>
+      <li><a href="#rebuild">修改原始碼後重新建構</a></li>
+      <li><a href="#add-model">新增 / 修改 AI 模型</a></li>
+      <li><a href="#ghcr">推送新版映像檔到 GHCR</a></li>
+      <li><a href="#new-server">在新伺服器部署</a></li>
+      <li><a href="#backup">備份與還原</a></li>
+      <li><a href="#port">連接埠配置</a></li>
+      <li><a href="#env-ref">重要環境變數</a></li>
+      <li><a href="#docker-commands">Docker 指令參考</a></li>
+      <li><a href="#danger-zone">危險操作</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. 日常指令速查 -->
+  <h2 id="quick-ref">1. 日常指令速查</h2>
+  <div class="card">
+    <table>
+      <tr><th>用途</th><th>指令</th></tr>
+      <tr><td>查看容器狀態</td><td><code>docker ps --filter "name=sub2api"</code></td></tr>
+      <tr><td>查看即時日誌</td><td><code>docker compose logs -f sub2api</code></td></tr>
+      <tr><td>重啟應用（不動 DB）</td><td><code>docker compose restart sub2api</code></td></tr>
+      <tr><td>進入容器 shell</td><td><code>docker exec -it sub2api sh</code></td></tr>
+      <tr><td>查看管理員密碼</td><td><code>docker logs sub2api 2>&1 | grep "Generated admin"</code></td></tr>
+      <tr><td>查看磁碟用量</td><td><code>docker system df</code></td></tr>
+    </table>
+    <p class="sub">以上指令需在 <code>~/services/sub2api-kiro/deploy</code> 目錄下執行（或加 <code>-f</code> 指定 compose 檔案路徑）。</p>
+  </div>
+
+  <!-- 2. 更新部署 -->
+  <h2 id="update">2. 更新部署（拉取最新映像檔）</h2>
+  <div class="card">
+    <p>當你已經推送新版映像檔到 GHCR，在伺服器上執行：</p>
+    <pre><code>cd ~/services/sub2api-kiro/deploy
+
+# 拉取最新映像檔
+docker compose pull sub2api
+
+# 只重建應用容器，不動 PostgreSQL/Redis（資料保留）
+docker compose up -d --no-deps sub2api
+
+# 確認狀態
+docker ps --filter "name=sub2api"</code></pre>
+    <div class="ok">
+      三個容器都顯示 <strong>(healthy)</strong> 就代表更新成功。
+    </div>
+  </div>
+
+  <!-- 3. 修改原始碼後重新建構 -->
+  <h2 id="rebuild">3. 修改原始碼後重新建構</h2>
+  <div class="card">
+    <p>當你修改了前端翻譯、後端邏輯等原始碼，需要本地 build 新映像檔：</p>
+    <pre><code>cd ~/services/sub2api-kiro
+
+# 建構映像檔（包含前端 + 後端，約 2-3 分鐘）
+docker build -t sub2api-kiro:latest .
+
+# 標記為 GHCR 路徑
+docker tag sub2api-kiro:latest ghcr.io/weiopenai/sub2api-kiro:latest
+
+# 重新部署
+cd deploy
+docker compose stop sub2api
+docker compose rm -f sub2api
+docker compose up -d --no-deps sub2api</code></pre>
+    <div class="note">
+      如果你只改了 <code>.env</code>（例如換 port），也需要 stop → rm → up 才會生效。單純 restart 不會套用新的 port mapping。
+    </div>
+  </div>
+
+  <!-- 4. 新增 / 修改 AI 模型 -->
+  <h2 id="add-model">4. 新增 / 修改 AI 模型</h2>
+  <div class="card">
+    <p>想讓系統支援一個新的 Kiro 模型（例如 <code>claude-opus-4-8</code>），只改前端或後台白名單是<strong>不夠</strong>的。後端對 Kiro 帳號有一道模型檢查，模型名稱必須先登錄在程式碼裡，否則請求在送往上游前就會被擋下（拿不到 200）。</p>
+
+    <h3>步驟 1：編輯模型清單</h3>
+    <p>檔案：<code>backend/internal/pkg/kiro/constants.go</code>，需要改<strong>兩個地方</strong>：</p>
+    <pre><code>// (1) 加進 Models 清單 → 通過檢查、並出現在 /v1/models
+var Models = []string{
+    "claude-opus-4-8",
+    "claude-opus-4-8-thinking",
+    "claude-opus-4-7",
+    ...
+}
+
+// (2) 加進 ModelMapping → 對外名稱對應「上游真正吃的名稱」
+var ModelMapping = map[string]string{
+    "claude-opus-4-8":          "claude-opus-4.8",
+    "claude-opus-4-8-thinking": "claude-opus-4.8",
+    "claude-opus-4-7":          "claude-opus-4.7",
+    ...
+}</code></pre>
+    <div class="note">
+      命名規律：對外用連字號（<code>claude-opus-4-8</code>），上游名稱用小數點（<code>claude-opus-4.8</code>）。沿用既有條目的格式即可。
+    </div>
+
+    <h3>步驟 2：重新建構並部署</h3>
+    <p>這是原始碼改動，必須重新 build 映像（同<a href="#rebuild">第 3 章</a>）。<strong>注意 <code>docker tag</code> 那步不可省略</strong>，因為 compose 參照的是 GHCR 路徑：</p>
+    <pre><code>cd ~/services/sub2api-kiro
+
+# 建構新映像
+docker build -t sub2api-kiro:latest .
+
+# 標記為 compose 參照的名稱（關鍵，否則會用到舊映像）
+docker tag sub2api-kiro:latest ghcr.io/weiopenai/sub2api-kiro:latest
+
+# 重建應用容器（不動 DB/Redis）
+cd deploy
+docker compose stop sub2api
+docker compose rm -f sub2api
+docker compose up -d --no-deps sub2api</code></pre>
+
+    <h3>步驟 3：驗證</h3>
+    <pre><code># 取一把 active 的 API key
+KEY=$(docker exec sub2api-postgres psql -U sub2api -d sub2api -t -A \
+  -c "SELECT key FROM api_keys WHERE deleted_at IS NULL AND status='active' LIMIT 1;")
+
+# 確認模型已列在 /v1/models
+curl -s http://localhost:8880/v1/models -H "Authorization: Bearer $KEY" | grep claude-opus-4-8
+
+# 實際打一支請求，確認回 200（這步才會真的打到 Kiro 上游）
+curl -s -w "\nHTTP %{http_code}\n" http://localhost:8880/v1/messages \
+  -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{"model":"claude-opus-4-8","max_tokens":64,"messages":[{"role":"user","content":"ping"}]}'</code></pre>
+    <div class="ok">
+      回 <strong>HTTP 200</strong> 且有回應內容 = 成功。
+    </div>
+    <div class="note">
+      若回錯誤（例如 model not found）：代表 Kiro 上游目前還沒這個模型，或實際名稱不是 <code>claude-opus-4.8</code>。此時把 <code>ModelMapping</code> 右側的值改成上游正確名稱，再重跑步驟 2 即可。程式端能不能轉發是一回事，上游有沒有這個模型是另一回事。
+    </div>
+  </div>
+
+  <!-- 5. 推送到 GHCR -->
+  <h2 id="ghcr">5. 推送新版映像檔到 GHCR</h2>
+  <div class="card">
+    <p>build 完成後，推送到 GitHub Container Registry 讓其他伺服器也能拉取：</p>
+    <pre><code># 確認已登入 GHCR
+gh auth token | docker login ghcr.io -u weiopenai --password-stdin
+
+# 推送
+docker push ghcr.io/weiopenai/sub2api-kiro:latest</code></pre>
+    <p>推送完成後，其他伺服器只需 <code>docker compose pull sub2api && docker compose up -d --no-deps sub2api</code> 即可更新。</p>
+  </div>
+
+  <!-- 6. 新伺服器部署 -->
+  <h2 id="new-server">6. 在新伺服器部署</h2>
+  <div class="card">
+    <h3>快速步驟</h3>
+    <pre><code># 1. 安裝 Docker
+curl -fsSL https://get.docker.com | sh
+sudo systemctl enable --now docker
+
+# 2. 建立部署目錄
+mkdir -p ~/sub2api-kiro && cd ~/sub2api-kiro
+
+# 3. 取得部署檔案（從你的 GitHub repo 或 scp 傳上來）
+git clone https://github.com/weiopenai/sub2api-kiro.git .
+cd deploy
+cp .env.example .env
+
+# 4. 編輯 .env（必改密碼和金鑰）
+nano .env
+
+# 5. 啟動
+docker compose up -d
+docker compose logs -f sub2api</code></pre>
+    <h3>.env 必改項目</h3>
+    <table>
+      <tr><th>變數</th><th>說明</th><th>產生方式</th></tr>
+      <tr><td><code>SERVER_PORT</code></td><td>Web 連接埠</td><td>填 <code>8880</code></td></tr>
+      <tr><td><code>POSTGRES_PASSWORD</code></td><td>DB 密碼</td><td><code>openssl rand -hex 16</code></td></tr>
+      <tr><td><code>JWT_SECRET</code></td><td>登入 token 金鑰</td><td><code>openssl rand -hex 32</code></td></tr>
+      <tr><td><code>TOTP_ENCRYPTION_KEY</code></td><td>2FA 加密金鑰</td><td><code>openssl rand -hex 32</code></td></tr>
+      <tr><td><code>TZ</code></td><td>時區</td><td><code>Asia/Taipei</code></td></tr>
+    </table>
+    <p>詳細圖文指南：<a href="install-zh-TW.html">deploy/install-zh-TW.html</a></p>
+  </div>
+
+  <!-- 7. 備份與還原 -->
+  <h2 id="backup">7. 備份與還原</h2>
+  <div class="card">
+    <h3>備份資料庫</h3>
+    <pre><code># 匯出 SQL
+docker exec sub2api-postgres pg_dump -U sub2api sub2api > backup_$(date +%F).sql
+
+# 壓縮保存
+gzip backup_$(date +%F).sql</code></pre>
+    <h3>還原資料庫</h3>
+    <pre><code># 先停掉應用
+docker compose stop sub2api
+
+# 還原
+gunzip backup_2026-06-16.sql.gz
+docker exec -i sub2api-postgres psql -U sub2api sub2api < backup_2026-06-16.sql
+
+# 重啟
+docker compose start sub2api</code></pre>
+    <h3>備份整個 volume（完整備份）</h3>
+    <pre><code>docker run --rm -v deploy_postgres_data:/data -v $(pwd):/backup alpine \
+  tar czf /backup/postgres_volume_$(date +%F).tar.gz -C /data .</code></pre>
+  </div>
+
+  <!-- 8. 連接埠配置 -->
+  <h2 id="port">8. 連接埠配置</h2>
+  <div class="card">
+    <table>
+      <tr><th>服務</th><th>容器內部埠</th><th>主機對外埠</th><th>設定位置</th></tr>
+      <tr><td>Sub2API Web</td><td>8080</td><td><strong>8880</strong></td><td><code>.env → SERVER_PORT</code></td></tr>
+      <tr><td>PostgreSQL</td><td>5432</td><td>5432</td><td><code>.env → DATABASE_PORT</code></td></tr>
+      <tr><td>Redis</td><td>6379</td><td>6379</td><td><code>.env → REDIS_PORT</code></td></tr>
+    </table>
+    <p>修改埠號後需 <code>stop → rm → up</code> 才會生效：</p>
+    <pre><code>docker compose stop sub2api
+docker compose rm -f sub2api
+docker compose up -d --no-deps sub2api</code></pre>
+  </div>
+
+  <!-- 9. 重要環境變數 -->
+  <h2 id="env-ref">9. 重要環境變數速查</h2>
+  <div class="card">
+    <table>
+      <tr><th>變數</th><th>作用</th><th>注意事項</th></tr>
+      <tr><td><code>SERVER_PORT</code></td><td>Web 對外埠</td><td>避免用 8080</td></tr>
+      <tr><td><code>POSTGRES_PASSWORD</code></td><td>DB 密碼</td><td>首次設定後不要改（會連不上）</td></tr>
+      <tr><td><code>JWT_SECRET</code></td><td>JWT 簽章</td><td>留空 = 每次重啟登出所有人</td></tr>
+      <tr><td><code>TOTP_ENCRYPTION_KEY</code></td><td>2FA 加密</td><td>留空 = 每次重啟 2FA 失效</td></tr>
+      <tr><td><code>ADMIN_EMAIL</code></td><td>管理員帳號</td><td>首次啟動時建立</td></tr>
+      <tr><td><code>ADMIN_PASSWORD</code></td><td>管理員密碼</td><td>留空 = 自動生成（看 log）</td></tr>
+      <tr><td><code>TZ</code></td><td>時區</td><td>影響用量統計的「今日」邊界</td></tr>
+      <tr><td><code>RUN_MODE</code></td><td>運行模式</td><td><code>standard</code>（完整）或 <code>simple</code>（簡易）</td></tr>
+    </table>
+  </div>
+
+  <!-- 10. Docker 指令參考 -->
+  <h2 id="docker-commands">10. Docker 指令參考</h2>
+  <div class="card">
+    <table>
+      <tr><th>情境</th><th>指令</th></tr>
+      <tr><td>啟動全部服務</td><td><code>docker compose up -d</code></td></tr>
+      <tr><td>停止全部服務</td><td><code>docker compose down</code></td></tr>
+      <tr><td>只重啟應用</td><td><code>docker compose up -d --no-deps sub2api</code></td></tr>
+      <tr><td>拉取最新映像檔</td><td><code>docker compose pull sub2api</code></td></tr>
+      <tr><td>查看所有 volume</td><td><code>docker volume ls</code></td></tr>
+      <tr><td>清理未使用映像檔</td><td><code>docker image prune -f</code></td></tr>
+      <tr><td>查看容器資源用量</td><td><code>docker stats --no-stream</code></td></tr>
+      <tr><td>匯出映像檔為 tar</td><td><code>docker save ghcr.io/weiopenai/sub2api-kiro:latest | gzip > sub2api.tar.gz</code></td></tr>
+      <tr><td>從 tar 載入映像檔</td><td><code>docker load < sub2api.tar.gz</code></td></tr>
+    </table>
+  </div>
+
+  <!-- 11. 危險操作 -->
+  <h2 id="danger-zone">11. 危險操作 ⚠️</h2>
+  <div class="card">
+    <div class="danger">
+      <strong>以下操作不可逆，執行前請確認已備份！</strong>
+    </div>
+    <table>
+      <tr><th>指令</th><th>後果</th></tr>
+      <tr><td><code>docker compose down -v</code></td><td>⚠️ 刪除所有 volume = <strong>資料全清</strong>（DB、Redis、config）</td></tr>
+      <tr><td><code>docker volume rm deploy_postgres_data</code></td><td>⚠️ 刪除資料庫</td></tr>
+      <tr><td>修改 <code>POSTGRES_PASSWORD</code> 而不重建 DB</td><td>⚠️ 應用無法連線資料庫</td></tr>
+    </table>
+    <h3>安全的停止方式</h3>
+    <pre><code># ✅ 安全：停止容器但保留資料
+docker compose down
+
+# ❌ 危險：停止容器且刪除所有資料
+docker compose down -v</code></pre>
+  </div>
+
+  <footer>
+    Sub2API Kiro 使用手冊 · Port: 8880 · Image: ghcr.io/weiopenai/sub2api-kiro:latest · 部署路徑: ~/services/sub2api-kiro/deploy
+  </footer>
+</div>
+</body>
+</html>

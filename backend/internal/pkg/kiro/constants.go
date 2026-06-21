@@ -31,6 +31,8 @@ var OAuthScopes = []string{
 }
 
 var Models = []string{
+	"claude-opus-4-8",
+	"claude-opus-4-8-thinking",
 	"claude-opus-4-7",
 	"claude-opus-4-7-thinking",
 	"claude-opus-4-6",
@@ -47,6 +49,8 @@ var Models = []string{
 }
 
 var ModelMapping = map[string]string{
+	"claude-opus-4-8":            "claude-opus-4.8",
+	"claude-opus-4-8-thinking":   "claude-opus-4.8",
 	"claude-opus-4-7":            "claude-opus-4.7",
 	"claude-opus-4-7-thinking":   "claude-opus-4.7",
 	"claude-opus-4-6":            "claude-opus-4.6",
