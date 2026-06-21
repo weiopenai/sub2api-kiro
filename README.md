@@ -12,6 +12,12 @@ Sub2API Kiro is a self-hosted AI API gateway for distributing subscription quota
 
 The project is maintained for practical self-hosted deployments where Kiro accounts need to work alongside Anthropic, OpenAI, Gemini, and Antigravity accounts under one gateway.
 
+## What's New
+
+### 2026-06-21
+- Added **Claude Opus 4.8** support for Kiro: `claude-opus-4-8` and `claude-opus-4-8-thinking` are now in the Kiro model list and mapped to the upstream model `claude-opus-4.8`.
+- Added an "Add / modify an AI model" chapter to the deployment guide ([deploy/usage-guide-zh-TW.html](deploy/usage-guide-zh-TW.html)) covering the edit → rebuild → verify workflow.
+
 ## Highlights
 
 - **Kiro platform support**: Kiro account authorization, token refresh, request forwarding, model mapping, and usage/quota display.
