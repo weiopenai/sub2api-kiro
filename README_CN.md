@@ -2,7 +2,7 @@
 
 面向 Claude Code 类客户端、Kiro 账号和多平台账号调度的 AI API 网关。
 
-[English](README.md) | [繁體中文](README_TW.md)
+[English](README.md) | 简体中文 | [繁體中文](README_TW.md) | [日本語](README_JA.md)
 
 > 本项目是基于 [Wei-Shaw/sub2api](https://github.com/Wei-Shaw/sub2api) 的独立维护分支。项目继续保留原始 LGPL-3.0-or-later 许可证和来源署名，但产品方向会围绕 Kiro、Claude Code 类客户端和自部署网关场景独立演进。
 

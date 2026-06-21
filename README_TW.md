@@ -2,7 +2,7 @@
 
 面向 Claude Code 類客戶端、Kiro 帳號和多平台帳號排程的 AI API 閘道。
 
-[English](README.md) | [简体中文](README_CN.md)
+[English](README.md) | [简体中文](README_CN.md) | 繁體中文 | [日本語](README_JA.md)
 
 > 本專案是基於 [Wei-Shaw/sub2api](https://github.com/Wei-Shaw/sub2api) 的獨立維護分支。專案繼續保留原始 LGPL-3.0-or-later 授權條款和來源署名，但產品方向會圍繞 Kiro、Claude Code 類客戶端和自部署閘道情境獨立演進。
 

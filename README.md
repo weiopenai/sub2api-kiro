@@ -2,7 +2,7 @@
 
 AI API gateway for Claude Code style clients, Kiro accounts, and multi-platform account scheduling.
 
-[简体中文](README_CN.md) | [繁體中文](README_TW.md)
+English | [简体中文](README_CN.md) | [繁體中文](README_TW.md) | [日本語](README_JA.md)
 
 > This project is an independently maintained fork of [Wei-Shaw/sub2api](https://github.com/Wei-Shaw/sub2api). It keeps the original LGPL-3.0-or-later license and attribution, while adding a Kiro-focused product direction.
 
